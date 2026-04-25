@@ -1,0 +1,46 @@
+services:
+
+  platform-postgres:
+    build:
+      context: ./platform/postgres
+      dockerfile: Dockerfile
+
+    container_name: platform-postgres
+
+    env_file:
+      - ./env/.env.dev
+
+    volumes:
+      - ./volumes/postgres:/var/lib/postgresql/data
+
+    networks:
+      - platform-network
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  knowledge-module:
+    build:
+      context: ./services/knowledge-module
+      dockerfile: Dockerfile
+
+    container_name: knowledge-module
+
+    env_file:
+      - ./env/.env.dev
+
+    ports:
+      - "8000:8000"
+
+    networks:
+      - platform-network
+networks:
+  platform-network:
+    name: platform-network
