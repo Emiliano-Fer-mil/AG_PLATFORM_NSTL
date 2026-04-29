@@ -1,0 +1,18 @@
+services:
+
+  platform-postgres:
+    ports:
+      - "5432:5432"
+  
+  knowledge-module:
+    ports:
+      - "8000:8000"
+  
+    volumes:
+      - ./services/knowledge-module:/app
+
+    command: >
+      uvicorn main:app
+      --host 0.0.0.0
+      --port 8000
+      --reload

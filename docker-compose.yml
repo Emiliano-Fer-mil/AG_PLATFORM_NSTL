@@ -11,7 +11,7 @@ services:
       - ./env/.env.dev
 
     volumes:
-      - ./volumes/postgres:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
 
     networks:
       - platform-network
@@ -35,12 +35,12 @@ services:
 
     env_file:
       - ./env/.env.dev
-
-    ports:
-      - "8000:8000"
-
+    
     networks:
       - platform-network
 networks:
   platform-network:
     name: platform-network
+
+volumes:
+  postgres_data:
